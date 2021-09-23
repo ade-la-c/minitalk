@@ -1,22 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ade-la-c <ade-la-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/22 13:31:23 by ade-la-c          #+#    #+#             */
-/*   Updated: 2021/09/23 17:46:54 by ade-la-c         ###   ########.fr       */
+/*   Created: 2021/09/23 17:42:35 by ade-la-c          #+#    #+#             */
+/*   Updated: 2021/09/23 17:43:33 by ade-la-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minitalk.h"
+#include "minitalk.h"
 
-int	main(int ac, char **av)
+void	exit_error(char *error)
 {
-	int	pid;
-
-	pid = ft_atoi(av[0]);
-
-	return (0);
+	ft_putstr(error);
+	ft_putchar("\n");
+	exit(0);
 }

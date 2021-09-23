@@ -6,14 +6,17 @@
 /*   By: ade-la-c <ade-la-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 13:31:49 by ade-la-c          #+#    #+#             */
-/*   Updated: 2021/09/22 14:52:35 by ade-la-c         ###   ########.fr       */
+/*   Updated: 2021/09/23 17:48:33 by ade-la-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minitalk.h"
 
-int	main(int ac, char **av)
+int	main(void)
 {
-	
+	int	pid;
+
+	pid = getpid();
+	write(1, &pid, sizeof(int));
 	return (0);
 }
