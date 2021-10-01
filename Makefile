@@ -6,21 +6,21 @@
 #    By: ade-la-c <ade-la-c@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/09/21 14:45:52 by ade-la-c          #+#    #+#              #
-#    Updated: 2021/09/23 17:44:53 by ade-la-c         ###   ########.fr        #
+#    Updated: 2021/10/01 13:09:59 by ade-la-c         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SERVER				= server
 
 SSRCS				= srcs/server/server.c \
-					srcs/utils.c \
+					srcs/error.c \
 
 SOBJS				= $(SSRCS:.c=.o)
 
 CLIENT				= client
 
 CSRCS				= srcs/client/client.c \
-					srcs/utils.c \
+					srcs/error.c \
 
 COBJS				= $(CSRCS:.c=.o)
 
@@ -28,7 +28,7 @@ CC					= gcc
 
 RM					= rm -f
 
-CFLAGS				= -Wall -Werror -Wextra -I. #-g -fsanitize=address
+CFLAGS				= -Wall -Werror -Wextra -I. -g -fsanitize=address
 
 LIB					= -L ./libft -lft
 
