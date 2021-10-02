@@ -6,7 +6,7 @@
 /*   By: ade-la-c <ade-la-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/01 13:07:48 by ade-la-c          #+#    #+#             */
-/*   Updated: 2021/10/01 13:08:45 by ade-la-c         ###   ########.fr       */
+/*   Updated: 2021/10/02 17:27:52 by ade-la-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	exit_error(char *error)
 {
+	ft_putstr("Error : ");
 	ft_putstr(error);
 	ft_putchar('\n');
 	exit(0);

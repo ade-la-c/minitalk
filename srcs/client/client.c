@@ -6,7 +6,7 @@
 /*   By: ade-la-c <ade-la-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 13:31:23 by ade-la-c          #+#    #+#             */
-/*   Updated: 2021/10/01 19:16:26 by ade-la-c         ###   ########.fr       */
+/*   Updated: 2021/10/02 18:01:12 by ade-la-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,24 @@ static void	send_char(int c, pid_t pid)
 {
 	int	i;
 
-	i = 7;
+	i = 8;
 	while (i)
 	{
-		if ((c & (1 << 7)) == 0)
-		{write(1, "0", 1);
-			kill(pid, SIGUSR1);
+		c = c << 1;
+		if ((c & (1 << 8)) == 0)
+		{
+			if (kill(pid, SIGUSR1))
+				exit_error("wrong pid");
+			usleep(200);
 		}
 		else
-		{write(1, "1", 1);
-			kill(pid, SIGUSR2);
+		{
+			if (kill(pid, SIGUSR2) == -1)
+				exit_error("wrong pid");
+			usleep(200);
 		}
-		usleep(100);
-		c = c << 1;
 		i--;
-	}write(1, "\n", 1);
+	}
 }
 
 int	main(int ac, char **av)
@@ -68,8 +71,6 @@ int	main(int ac, char **av)
 	str = av[2];
 	i = 0;
 	while (str[i])
-	{
 		send_char((int)str[i++], pid);
-	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ade-la-c <ade-la-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/01 11:21:03 by ade-la-c          #+#    #+#             */
-/*   Updated: 2021/10/01 19:06:42 by ade-la-c         ###   ########.fr       */
+/*   Updated: 2021/10/02 18:19:21 by ade-la-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,19 @@
 
 volatile sig_atomic_t	g_binary = -1;
 
-char	*joinchar(char *str, char c)
+static void	sigusr1_handler(int sig, siginfo_t *info, void *context)
 {
-	int		i;
-	char	*s;
-
-	i = 0;
-	free(str);
-	s = (char *)malloc(sizeof(char) * ft_strlen(str) + 2);
-	if (!s)
-		exit_error("malloc failed");
-	while (str[i])
-	{
-		s[i] = str[i];
-		i++;
-	}
-	str[i++] = c;
-	str[i] = '\0';
-	return (s);
-}
-
-static void	sigusr1_handler(int sig)
-{
-	(void)sig;
+	(void)sig;//write(1, "0", 1);
+	(void)context;
+	ft_putnbr_fd(info->si_pid, 1);
 	g_binary = 0;
 }
 
-static void	sigusr2_handler(int sig)
+static void	sigusr2_handler(int sig, siginfo_t *info, void *context)
 {
-	(void)sig;
+	(void)sig;//write(1, "1", 1);
+	(void)context;
+	ft_putnbr_fd(info->si_pid, 1);
 	g_binary = 1;
 }
 
@@ -54,32 +38,27 @@ int	main(void)
 	struct sigaction	sa2;
 	int					i;
 	char				buf;
-	char				*str;
 
-	sa1.__sigaction_u.__sa_handler = &sigusr1_handler;
+	sa1.__sigaction_u.__sa_sigaction = &sigusr1_handler;
+	sa1.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &sa1, NULL);
-	sa2.__sigaction_u.__sa_handler = &sigusr2_handler;
+	sa2.__sigaction_u.__sa_sigaction = &sigusr2_handler;
+	sa2.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR2, &sa2, NULL);
-	i = 0;
-	str = NULL;
+	i = 9;
 	ft_putnbr_fd(getpid(), 1);
 	ft_putchar('\n');
 	while (1)
 	{
-		pause();
-		if (i <= 7)
-		{
-			buf = buf << 1;
-			buf += g_binary;
-			i++;
-		}
-		if (i == 7)
-		{
-			i = 0;
-			write(1, &buf, 1);
+		while (--i > 0 && pause() == -1)
+			if (g_binary == 1)
+				buf += (1 << (i - 1));
+		// if (i == 0)
+		// {
+			i = 9;			//	write(1, " ", 1);
+			write(1, &buf, 1);//	write(1, "\n", 1);
 			buf = 0;
-		}
-		// printf("poup\n");
+		// }
 		g_binary = -1;
 	}
 	return (0);
