@@ -6,7 +6,7 @@
 /*   By: ade-la-c <ade-la-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/01 11:21:03 by ade-la-c          #+#    #+#             */
-/*   Updated: 2021/10/04 19:06:33 by ade-la-c         ###   ########.fr       */
+/*   Updated: 2021/10/04 19:23:04 by ade-la-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	sigusr1_handler(int sig, siginfo_t *info, void *context)
 	(void)info;
 	g_binary[0] = 0;
 	g_binary[1] = info->si_pid;
-	usleep(100);
+	//usleep(100);
 	if (kill(info->si_pid, SIGUSR1))
 		exit_error("wrong pid");
 }
@@ -33,7 +33,7 @@ static void	sigusr2_handler(int sig, siginfo_t *info, void *context)
 	(void)info;
 	g_binary[0] = 1;
 	g_binary[1] = info->si_pid;
-	usleep(100);
+	//usleep(100);
 	if (kill(info->si_pid, SIGUSR1))
 		exit_error("wrong pid");
 }

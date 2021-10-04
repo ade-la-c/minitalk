@@ -6,7 +6,7 @@
 /*   By: ade-la-c <ade-la-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 13:31:23 by ade-la-c          #+#    #+#             */
-/*   Updated: 2021/10/04 19:07:49 by ade-la-c         ###   ########.fr       */
+/*   Updated: 2021/10/04 19:23:11 by ade-la-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 static void	sigusr1_handler(int sig)
 {
-	// usleep(100);
+	usleep(100);
 	(void)sig;
 }
 
 static void	sigusr2_handler(int sig)
 {
-	// usleep(100);
+	usleep(100);
 	(void)sig;
 	exit(0);
 }
@@ -34,7 +34,7 @@ static void	send_char(int c, pid_t pid)
 	{
 		c = c << 1;
 		// pause();
-		usleep(500);
+		// usleep(500);
 		if ((c & (1 << 8)) == 0)
 		{//write(1, "0", 1);
 			if (kill(pid, SIGUSR1) == -1)
@@ -45,6 +45,7 @@ static void	send_char(int c, pid_t pid)
 			if (kill(pid, SIGUSR2) == -1)
 				exit_error("wrong pid");
 		}
+		usleep(200);
 		i--;
 	}
 }
