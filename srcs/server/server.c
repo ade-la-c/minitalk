@@ -6,7 +6,7 @@
 /*   By: ade-la-c <ade-la-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/01 11:21:03 by ade-la-c          #+#    #+#             */
-/*   Updated: 2021/10/04 15:58:56 by ade-la-c         ###   ########.fr       */
+/*   Updated: 2021/10/04 19:06:33 by ade-la-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ static void	sigusr1_handler(int sig, siginfo_t *info, void *context)
 	(void)context;
 	(void)info;
 	g_binary[0] = 0;
-	kill(info->si_pid, SIGUSR1);
+	g_binary[1] = info->si_pid;
+	usleep(100);
+	if (kill(info->si_pid, SIGUSR1))
+		exit_error("wrong pid");
 }
 
 static void	sigusr2_handler(int sig, siginfo_t *info, void *context)
@@ -29,7 +32,10 @@ static void	sigusr2_handler(int sig, siginfo_t *info, void *context)
 	(void)context;
 	(void)info;
 	g_binary[0] = 1;
-	kill(info->si_pid, SIGUSR1);
+	g_binary[1] = info->si_pid;
+	usleep(100);
+	if (kill(info->si_pid, SIGUSR1))
+		exit_error("wrong pid");
 }
 
 // /*
@@ -47,22 +53,32 @@ int	main(void)
 	sa2.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &sa1, NULL);
 	sigaction(SIGUSR2, &sa2, NULL);
-	i = 9;
+	i = 8;
 	ft_putnbr_fd(getpid(), 1);
 	ft_putchar('\n');
-	// pause();
 	while (1)
 	{
-		// g_binary[0] = -1;
-		while (--i > 0 && pause() == -1)
+		g_binary[0] = -1;
+		if (i > 0 && pause() == -1)
+		{
 			if (g_binary[0] == 1)
 				buf += (1 << (i - 1));
-		// if (i == 0) 
-		// {
-		i = 9;			//write(1, " ", 1);				
-		write(1, &buf, 1);	//write(1, "\n", 1);
-		buf = 0;
-		// }
+			i--;
+		}
+		if (i == 0) 
+		{
+			i = 8;
+			//write(1, " ", 1);
+			if (buf)
+				write(1, &buf, 1);
+			else
+			{
+				write(1, "\n", 1);
+				if (kill(g_binary[1], SIGUSR2) == -1)
+					exit_error("wrong pid");
+			}
+			buf = 0;
+		}
 	}
 	return (0);
 }
