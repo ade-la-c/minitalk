@@ -6,7 +6,7 @@
 /*   By: ade-la-c <ade-la-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 13:31:23 by ade-la-c          #+#    #+#             */
-/*   Updated: 2021/10/04 19:23:11 by ade-la-c         ###   ########.fr       */
+/*   Updated: 2021/10/05 13:55:36 by ade-la-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static void	send_char(int c, pid_t pid)
 	while (i)
 	{
 		c = c << 1;
-		// pause();
 		// usleep(500);
 		if ((c & (1 << 8)) == 0)
 		{//write(1, "0", 1);
@@ -45,7 +44,8 @@ static void	send_char(int c, pid_t pid)
 			if (kill(pid, SIGUSR2) == -1)
 				exit_error("wrong pid");
 		}
-		usleep(200);
+		pause();
+		// usleep(200);
 		i--;
 	}
 }
@@ -94,5 +94,6 @@ int	main(int ac, char **av)
 	while (str[i])
 		send_char((int)str[i++], pid);
 	send_char(0, pid);
+	pause();
 	return (0);
 }
