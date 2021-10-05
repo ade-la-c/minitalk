@@ -6,7 +6,7 @@
 /*   By: ade-la-c <ade-la-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/22 13:31:23 by ade-la-c          #+#    #+#             */
-/*   Updated: 2021/10/05 13:55:36 by ade-la-c         ###   ########.fr       */
+/*   Updated: 2021/10/05 18:21:20 by ade-la-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,44 +33,20 @@ static void	send_char(int c, pid_t pid)
 	while (i)
 	{
 		c = c << 1;
-		// usleep(500);
 		if ((c & (1 << 8)) == 0)
-		{//write(1, "0", 1);
+		{
 			if (kill(pid, SIGUSR1) == -1)
 				exit_error("wrong pid");
 		}
 		else
-		{//write(1, "1", 1);
+		{
 			if (kill(pid, SIGUSR2) == -1)
 				exit_error("wrong pid");
 		}
-		pause();
-		// usleep(200);
+		usleep(200);
 		i--;
 	}
 }
-
-/*
-
-static void	kill_nl(int pid)
-{
-	int	i;
-
-	i = 5;
-	while (--i > 0)
-		if (kill(pid, SIGUSR1) == -1 && pause() != -1)
-			exit_error("wrong pid");
-	if (kill(pid, SIGUSR2) == -1 && pause() != -1)
-		exit_error("wrong pid");
-	if (kill(pid, SIGUSR1) == -1 && pause() != -1)
-		exit_error("wrong pid");
-	if (kill(pid, SIGUSR2) == -1 && pause() != -1)
-		exit_error("wrong pid");
-	if (kill(pid, SIGUSR1) == -1)
-		exit_error("wrong pid");
-}
-
-// */
 
 int	main(int ac, char **av)
 {
@@ -94,6 +70,5 @@ int	main(int ac, char **av)
 	while (str[i])
 		send_char((int)str[i++], pid);
 	send_char(0, pid);
-	pause();
 	return (0);
 }
